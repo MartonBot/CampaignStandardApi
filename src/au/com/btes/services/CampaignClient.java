@@ -8,6 +8,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -15,7 +16,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import com.google.gson.Gson;
 
 import au.com.btes.models.CampaignServiceUrl;
-import au.com.btes.models.profile.ProfileResponse;
+import au.com.btes.models.profile.Profile;
 import au.com.btes.models.services.ServicesResponse;
 import au.com.btes.models.subscriptions.SubscribeRequest;
 import au.com.btes.models.subscriptions.SubscribeResponse;
@@ -72,8 +73,8 @@ public class CampaignClient implements ICampaignClient {
 	}
 
 	@Override
-	public ProfileResponse getProfile(String primaryKey) throws CampaignCallException {
-		ProfileResponse profile = null;
+	public Profile getProfile(String primaryKey) throws CampaignCallException {
+		Profile profile = null;
 
 		try {
 			HttpClient client = getHttpClient();
@@ -85,7 +86,7 @@ public class CampaignClient implements ICampaignClient {
 
 			String json = Util.getTextContent(response);
 			Gson gson = new Gson();
-			profile = gson.fromJson(json, ProfileResponse.class);
+			profile = gson.fromJson(json, Profile.class);
 		} catch (IOException e) {
 			throw new CampaignCallException(e);
 		}
@@ -153,6 +154,25 @@ public class CampaignClient implements ICampaignClient {
 			HttpResponse response = client.execute(deleteRequest);
 
 			Util.checkForStatus(response, HttpStatus.SC_NO_CONTENT);
+		} catch (IOException e) {
+			throw new CampaignCallException(e);
+		}
+	}
+	
+	public void updateProfile(Profile profile) throws CampaignCallException {
+		try {
+			HttpClient client = getHttpClient();
+			HttpPatch patchRequest = new HttpPatch(getProfileEndpoint(profile.getPKey()));
+			setAuthorizationHeaders(patchRequest);
+			patchRequest.setHeader("Content-Type", "application/json");
+
+			Gson gson = new Gson();
+			String postBodyJson = gson.toJson(profile);
+			patchRequest.setEntity(new StringEntity(postBodyJson));
+
+			HttpResponse response = client.execute(patchRequest);
+
+			Util.checkForStatus(response, HttpStatus.SC_OK);
 		} catch (IOException e) {
 			throw new CampaignCallException(e);
 		}

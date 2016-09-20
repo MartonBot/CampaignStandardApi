@@ -1,7 +1,7 @@
 package au.com.btes.services;
 
 import au.com.btes.models.CampaignServiceUrl;
-import au.com.btes.models.profile.ProfileResponse;
+import au.com.btes.models.profile.Profile;
 import au.com.btes.models.services.ServicesResponse;
 import au.com.btes.models.subscriptions.SubscribeRequest;
 import au.com.btes.models.subscriptions.SubscribeResponse;
@@ -40,7 +40,7 @@ public interface ICampaignClient {
 	 * @return the Adobe Campaign profile
 	 * @throws CampaignCallException
 	 */
-	ProfileResponse getProfile(String primaryKey) throws CampaignCallException;
+	Profile getProfile(String primaryKey) throws CampaignCallException;
 	
 	/**
 	 * This method returns the subscriptions (profile/service pairs) held by a given URL. This URL is typically obtained by querying a profile first.
@@ -53,5 +53,7 @@ public interface ICampaignClient {
 	SubscribeResponse subscribe(SubscribeRequest subscribeRequest, CampaignServiceUrl subscriptionsUrl) throws CampaignCallException;
 	
 	void unsubscribe(CampaignServiceUrl subscriptionUrl) throws CampaignCallException;
+	
+	void updateProfile(Profile profile) throws CampaignCallException;
 	
 }

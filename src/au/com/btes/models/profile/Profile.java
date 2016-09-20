@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import au.com.btes.models.CampaignServiceUrl;
 
-public class ProfileResponse {
+public class Profile {
 
 	@SerializedName("PKey")
 	@Expose
@@ -594,6 +594,10 @@ public class ProfileResponse {
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Profile(String pKey) {
+		this.pKey = pKey;
 	}
 
 }
