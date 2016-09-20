@@ -2,9 +2,11 @@ package au.com.btes.services;
 
 import au.com.btes.models.CampaignServiceUrl;
 import au.com.btes.models.profile.Profile;
+import au.com.btes.models.services.Service;
 import au.com.btes.models.services.ServicesResponse;
 import au.com.btes.models.subscriptions.SubscribeRequest;
 import au.com.btes.models.subscriptions.SubscribeResponse;
+import au.com.btes.models.subscriptions.Subscriber;
 import au.com.btes.models.subscriptions.SubscriptionsResponse;
 	
 public interface ICampaignClient {
@@ -50,10 +52,27 @@ public interface ICampaignClient {
 	 */
 	SubscriptionsResponse getSubscriptions(CampaignServiceUrl subscriptionsUrl) throws CampaignCallException;
 	
+	/**
+	 * This method is used to perform a subscription of a profile to a service. The {@link SubscribeRequest} is built from a {@link Subscriber}, which is built from a profile's primary key.
+	 * @param subscribeRequest the request object containing the subscriber
+	 * @param subscriptionsUrl the URL to the subscription, obtained from a {@link Service}
+	 * @return an object confirming the subscription
+	 * @throws CampaignCallException
+	 */
 	SubscribeResponse subscribe(SubscribeRequest subscribeRequest, CampaignServiceUrl subscriptionsUrl) throws CampaignCallException;
 	
+	/**
+	 * This method unsubscribes a profile from a service.
+	 * @param subscriptionUrl the URL obtained when listing a profile's subscriptions
+	 * @throws CampaignCallException
+	 */
 	void unsubscribe(CampaignServiceUrl subscriptionUrl) throws CampaignCallException;
 	
+	/**
+	 * This method is used to update Campaign fields of a profile. Only the fields that are set on the {@link Profile} object will be updated.
+	 * @param profile the profile that will be updated, built from a primary key
+	 * @throws CampaignCallException
+	 */
 	void updateProfile(Profile profile) throws CampaignCallException;
 	
 }
