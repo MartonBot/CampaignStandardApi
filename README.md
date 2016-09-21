@@ -1,8 +1,12 @@
-# Campaign Standard API
+#Campaign Standard API
 
-#How to use, a short demonstration
+##Purpose
 
-## Authentication
+This library provides a set of methods to manipulate Campaign objects (profiles, services, subscriptions). It is merely a wrapper around the REST Adobe IO API, but it does simplify the process of configuring and authenticating your requests. It also provides consistent models for the objects manipulated.
+
+##How to use
+
+###Authentication
 
 ```java
 String jwtToken = "xxxxx_Your_JWT_Token_Here_xxxxx";
@@ -22,7 +26,7 @@ exchange.retrieveAccessToken();
 String accessToken = exchange.getAccessToken();
 ```
 
-## Setting up the client
+###Setting up the client
 
 ```java
 String tenant = "xxxxx_The_Name_Of_Your_Instance_Here_xxxxx";
@@ -34,29 +38,27 @@ campaign.setAccessToken(accessToken);
 // the service is now configured and ready to be used
 ```
 
-## Retrieving the list of services available in Campaign
+###Retrieving the list of services available in Campaign
 
 ```java
-List<Service> newsCategories = null;
-ServicesResponse campaignServices;
-
-campaignServices = campaign.getServices();
-newsCategories = campaignServices.getServices();
+List<Service> services = null;
+ServicesResponse response = campaign.getServices();
+services = response.getServices();
 
 System.out.println("Services:");
-for (Service s: newsCategories) {
+for (Service s: services) {
 	System.out.println(s.getLabel() + " (" + s.getName() + ") - " + s.getPKey());
 }
 ```
 
-## Retrieving a profile
+###Retrieving a profile
 
 ```java
 String martonPrimaryKey = "thePrimaryKeyOfThatGuy";
 Profile martonProfile = campaign.getProfile(martonPrimaryKey);
 ```
 
-##Getting the subscriptions for a given profile
+###Getting the subscriptions for a given profile
 
 ```java
 // this is the URL to use to access that person's subscriptions
@@ -70,10 +72,22 @@ for (Subscription s: subscriptionsForMarton) {
 }
 ```
 
-##Unsubscribing from all the services
+###Unsubscribing from all the services
 
 ```java
-for (Subscription s: subscriptionsForMartin) {
+for (Subscription s: subscriptionsForMarton) {
 	campaign.unsubscribe(s);
+}
+```
+
+###Subscribing to all the services
+
+```java
+Subscriber martonSubscriber = new Subscriber(martonPrimaryKey);
+SubscribeRequest subscribeRequest = new SubscribeRequest(martonSubscriber);
+for (Service service: services) {
+	CampaignServiceUrl subscriptionsUrl = service.getUrlToSubscribe();
+	SubscribeResponse subscribeResponse = campaign.subscribe(subscribeRequest, subscriptionsUrl);
+	// do something with subscribeResponse...
 }
 ```
