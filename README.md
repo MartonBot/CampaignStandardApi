@@ -13,7 +13,7 @@ ExchangeClient exchange = new ExchangeClient();
 
 exchange.setEndpoint("https://ims-na1.adobelogin.com/ims/exchange/jwt/");
 exchange.setApiKey(apiKey);
-exchange.setClientSecret("f725d5f8-ee40-4fb5-99be-3fedcacec97d");
+exchange.setClientSecret(clientSecret);
 exchange.setJwtToken(jwtToken);
 
 // this will exchange your JWT token for an access token
