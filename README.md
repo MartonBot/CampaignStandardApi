@@ -53,7 +53,7 @@ for (Service s: newsCategories) {
 
 ```java
 String martonPrimaryKey = "thePrimaryKeyOfThatGuy";
-Profile martonProfile = campaign.getProfile(martinPrimaryKey);
+Profile martonProfile = campaign.getProfile(martonPrimaryKey);
 ```
 
 ##Getting the subscriptions for a given profile
@@ -71,3 +71,9 @@ for (Subscription s: subscriptionsForMarton) {
 ```
 
 ##Unsubscribing from all the services
+
+```java
+for (Subscription s: subscriptionsForMartin) {
+	campaign.unsubscribe(s);
+}
+```
