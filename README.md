@@ -2,7 +2,7 @@
 
 ##Purpose
 
-This library provides a set of methods to manipulate Campaign objects (profiles, services, subscriptions). It is merely a wrapper around the REST Adobe IO API, but it does simplify the process of configuring and authenticating your requests. It also provides consistent models for the objects manipulated.
+This library provides a set of methods to manipulate Campaign objects (profiles, services, subscriptions). It is merely a wrapper around the REST Adobe IO API, but it does simplify the process of configuring and authenticating your requests. It also provides consistent models for the objects manipulated as well as the exceptions thrown.
 
 ##How to use
 
@@ -90,4 +90,24 @@ for (Service service: services) {
 	SubscribeResponse subscribeResponse = campaign.subscribe(subscribeRequest, subscriptionsUrl);
 	// do something with subscribeResponse...
 }
+```
+
+###Updating a profile
+
+```java
+Profile profileToUpdate = new Profile(martinPrimaryKey);
+profileToUpdate.setFirstName("Marton");
+profileToUpdate.setLastName("Gri");
+campaign.updateProfile(profileToUpdate);
+```
+
+###Creating a new profile
+
+```java
+Profile newProfile = new Profile(null);
+newProfile.setEmail("gaston@mail.com");
+newProfile.setFirstName("Gaston");
+newProfile.setLastName("Nocir");
+Profile createdProfile = campaign.createProfile(newProfile);
+// it's also possible to reassign newProfile
 ```
