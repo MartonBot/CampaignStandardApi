@@ -58,8 +58,8 @@ public class CampaignClient implements ICampaignClient {
 			HttpClient client = getHttpClient();
 			HttpGet httpGet = new HttpGet(getServicesEndpoint());
 			setAuthorizationHeaders(httpGet);
+			
 			HttpResponse response = client.execute(httpGet);
-
 			Util.checkForStatus(response, HttpStatus.SC_OK);
 
 			String json = Util.getTextContent(response);
@@ -80,8 +80,8 @@ public class CampaignClient implements ICampaignClient {
 			HttpClient client = getHttpClient();
 			HttpGet httpGet = new HttpGet(getProfileEndpoint(primaryKey));
 			setAuthorizationHeaders(httpGet);
+			
 			HttpResponse response = client.execute(httpGet);
-
 			Util.checkForStatus(response, HttpStatus.SC_OK);
 
 			String json = Util.getTextContent(response);
@@ -102,12 +102,11 @@ public class CampaignClient implements ICampaignClient {
 			HttpClient client = getHttpClient();
 			HttpGet httpGet = new HttpGet(subscriptionsUrl.getHref());
 			setAuthorizationHeaders(httpGet);
+			
 			HttpResponse response = client.execute(httpGet);
-
 			Util.checkForStatus(response, HttpStatus.SC_OK);
 
-			String json;
-			json = Util.getTextContent(response);
+			String json = Util.getTextContent(response);
 			Gson gson = new Gson();
 			subscriptions = gson.fromJson(json, SubscriptionsResponse.class);
 		} catch (IOException e) {
@@ -130,12 +129,11 @@ public class CampaignClient implements ICampaignClient {
 			Gson gson = new Gson();
 			String postBodyJson = gson.toJson(subscribeRequest);
 			postRequest.setEntity(new StringEntity(postBodyJson));
+			
 			HttpResponse response = client.execute(postRequest);
-
 			Util.checkForStatus(response, HttpStatus.SC_CREATED);
 
 			String json = Util.getTextContent(response);
-
 			subscribeResponse = gson.fromJson(json, SubscribeResponse.class);
 		} catch (IOException e) {
 			throw new CampaignCallException(e);
@@ -152,7 +150,6 @@ public class CampaignClient implements ICampaignClient {
 			setAuthorizationHeaders(deleteRequest);
 
 			HttpResponse response = client.execute(deleteRequest);
-
 			Util.checkForStatus(response, HttpStatus.SC_NO_CONTENT);
 		} catch (IOException e) {
 			throw new CampaignCallException(e);
@@ -171,11 +168,37 @@ public class CampaignClient implements ICampaignClient {
 			patchRequest.setEntity(new StringEntity(postBodyJson));
 
 			HttpResponse response = client.execute(patchRequest);
-
 			Util.checkForStatus(response, HttpStatus.SC_OK);
 		} catch (IOException e) {
 			throw new CampaignCallException(e);
 		}
+	}
+	
+
+	@Override
+	public Profile createProfile(Profile profile) throws CampaignCallException {
+		Profile newProfile = null;
+		
+		try {
+			HttpClient client = getHttpClient();
+			HttpPost postRequest = new HttpPost(getProfileEndpoint(""));
+			setAuthorizationHeaders(postRequest);
+			postRequest.setHeader("Content-Type", "application/json");
+
+			Gson gson = new Gson();
+			String postBodyJson = gson.toJson(profile);
+			postRequest.setEntity(new StringEntity(postBodyJson));
+
+			HttpResponse response = client.execute(postRequest);
+			Util.checkForStatus(response, HttpStatus.SC_CREATED);
+			
+			String json = Util.getTextContent(response);
+			newProfile = gson.fromJson(json, Profile.class);
+		} catch (IOException e) {
+			throw new CampaignCallException(e);
+		}
+		
+		return newProfile;
 	}
 
 	private HttpClient getHttpClient() {

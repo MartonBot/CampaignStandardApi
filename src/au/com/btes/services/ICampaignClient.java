@@ -75,4 +75,12 @@ public interface ICampaignClient {
 	 */
 	void updateProfile(Profile profile) throws CampaignCallException;
 	
+	/**
+	 * This method creates a new profile in Campaign. Only the fields that are set on the {@link Profile} will be set in Campaign.
+	 * @param profile the profile to be created
+	 * @return the profile as created by Campaign
+	 * @throws CampaignCallException
+	 */
+	Profile createProfile(Profile profile) throws CampaignCallException;
+	
 }
