@@ -7,6 +7,7 @@ import au.com.btes.models.services.ServicesResponse;
 import au.com.btes.models.subscriptions.SubscribeRequest;
 import au.com.btes.models.subscriptions.SubscribeResponse;
 import au.com.btes.models.subscriptions.Subscriber;
+import au.com.btes.models.subscriptions.Subscription;
 import au.com.btes.models.subscriptions.SubscriptionsResponse;
 	
 public interface ICampaignClient {
@@ -63,10 +64,10 @@ public interface ICampaignClient {
 	
 	/**
 	 * This method unsubscribes a profile from a service.
-	 * @param subscriptionUrl the URL obtained when listing a profile's subscriptions
+	 * @param subscription obtained by listing a profile's subscriptions
 	 * @throws CampaignCallException
 	 */
-	void unsubscribe(CampaignServiceUrl subscriptionUrl) throws CampaignCallException;
+	void unsubscribe(Subscription subscription) throws CampaignCallException;
 	
 	/**
 	 * This method is used to update Campaign fields of a profile. Only the fields that are set on the {@link Profile} object will be updated.

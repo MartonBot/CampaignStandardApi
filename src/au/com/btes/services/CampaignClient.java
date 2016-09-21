@@ -20,6 +20,7 @@ import au.com.btes.models.profile.Profile;
 import au.com.btes.models.services.ServicesResponse;
 import au.com.btes.models.subscriptions.SubscribeRequest;
 import au.com.btes.models.subscriptions.SubscribeResponse;
+import au.com.btes.models.subscriptions.Subscription;
 import au.com.btes.models.subscriptions.SubscriptionsResponse;
 import au.com.btes.util.Util;
 
@@ -143,10 +144,10 @@ public class CampaignClient implements ICampaignClient {
 	}
 
 	@Override
-	public void unsubscribe(CampaignServiceUrl subscriptionUrl) throws CampaignCallException {
+	public void unsubscribe(Subscription subscription) throws CampaignCallException {
 		try {
 			HttpClient client = getHttpClient();
-			HttpDelete deleteRequest = new HttpDelete(subscriptionUrl.getHref());
+			HttpDelete deleteRequest = new HttpDelete(subscription.getHref());
 			setAuthorizationHeaders(deleteRequest);
 
 			HttpResponse response = client.execute(deleteRequest);
